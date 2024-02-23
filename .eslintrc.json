@@ -18,12 +18,26 @@
   "rules": {
     "indent": "off",
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "double"],
+    "quotes": [
+      "error",
+      "double",
+      { "avoidEscape": true, "allowTemplateLiterals": true }
+    ],
     "semi": ["error", "always"],
 
     "no-empty": "warn",
     "no-cond-assign": ["error", "always"],
 
-    "for-direction": "off"
+    "for-direction": "off",
+
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { "prefer": "type-imports", "fixStyle": "separate-type-imports" }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ]
   }
 }
