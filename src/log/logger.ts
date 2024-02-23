@@ -19,10 +19,7 @@ export const StdoutWriter: IWriter = {
 export class Logger {
   private static globalLevel: TLevel = LevelConsts.TraceLevel;
 
-  public static GlobalLogger: Logger = NewLogger(StdoutWriter)
-    .With()
-    .Timestamp()
-    .Logger();
+  public static GlobalLogger: Logger;
 
   public context: Uint8Array = new Uint8Array(0);
   public hooks: Hook[] = [];
@@ -33,6 +30,14 @@ export class Logger {
     public level: TLevel,
   ) {}
 
+  public static Init(): void {
+    Logger.GlobalLogger = NewLogger(StdoutWriter)
+      .With()
+      .Timestamp()
+      .Caller()
+      .Logger();
+  }
+
   public static SetGlobalLevel(level: TLevel) {
     Logger.globalLevel = level;
   }
@@ -42,11 +47,7 @@ export class Logger {
     l.context = new Uint8Array([...this.context]);
     l.hooks = [...this.hooks];
     l.stack = this.stack;
-
-    Object.entries(props).forEach(([k, v]) => {
-      (l as any)[k] = v;
-    });
-
+    Object.assign(l, props);
     return l;
   }
 
@@ -92,6 +93,10 @@ export class Logger {
     return e;
   }
 
+  public Clone(): Logger {
+    return this.CloneWithProperties({});
+  }
+
   public Output(w: IWriter): Logger {
     const l2 = NewLogger(w);
     l2.level = this.level;
@@ -124,13 +129,12 @@ export class Logger {
   }
 
   public Hook(...hooks: Hook[]): Logger {
-    const l = this.CloneWithProperties({});
-    if (l.hooks.length === 0) {
-      l.hooks = hooks;
-      return l;
+    if (this.hooks.length === 0) {
+      this.hooks = hooks;
+      return this;
     }
-    l.hooks.push(...hooks);
-    return l;
+    this.hooks.push(...hooks);
+    return this;
   }
 
   public Trace(): Event {
@@ -236,3 +240,5 @@ export function Fatal(): Event {
 export function Log(): Event {
   return Logger.GlobalLogger.Log();
 }
+
+Logger.Init();

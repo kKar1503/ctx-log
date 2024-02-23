@@ -7,56 +7,6 @@ import type { ILevelWriter } from "./writer";
 import type { Hook } from "./hook";
 import type { TDuration } from "../json/append";
 
-class EventPool {
-  private activeEvents: Event[];
-  private reservedEvents: Event[];
-
-  constructor(reservedEvents = 50) {
-    this.activeEvents = [];
-    this.reservedEvents = [];
-
-    this.initializeReservedEvents(reservedEvents);
-  }
-
-  private initializeReservedEvents(reserve: number) {
-    for (let i = 0; i < reserve; i++) {
-      const event = new Event();
-      this.reservedEvents.push(event);
-    }
-  }
-
-  public getEvent(): Event {
-    if (this.reservedEvents.length === 0) {
-      this.reservedEvents.push(new Event());
-    }
-
-    const event = this.reservedEvents.pop()!;
-
-    this.activeEvents.push(event);
-
-    return event;
-  }
-
-  public returnEvent(event: Event) {
-    const index = this.activeEvents.indexOf(event);
-    if (index !== -1) {
-      this.activeEvents.splice(index, 1);
-
-      this.reservedEvents.push(event);
-    }
-  }
-}
-
-export function NewEvent(w: ILevelWriter, level: TLevel): Event {
-  const e = eventPool.getEvent();
-  e.buf = Append.AppendBeginMarker(new Uint8Array(0));
-  e.w = w;
-  e.level = level;
-  return e;
-}
-
-export const eventPool = new EventPool();
-
 export class Event {
   public w: ILevelWriter = {} as ILevelWriter;
   public level: TLevel = Level.TraceLevel;
@@ -158,9 +108,9 @@ export class Event {
       `${err.name}: ${err.message}`,
     );
     if (this.stack && err.stack) {
-      this.buf = Append.AppendString(
+      this.buf = Append.AppendStrings(
         Append.AppendKey(this.buf, "stack"),
-        err.stack,
+        ...err.stack.split("\n").map((s) => s.trim()),
       );
     }
     return this;
@@ -227,7 +177,7 @@ function getCaller() {
   try {
     throw new Error();
   } catch (e) {
-    const callerLine = (e as Error).stack?.split("\n")[3];
+    const callerLine = (e as Error).stack?.split("\n")[6];
     if (callerLine) {
       const match = /at\s+(.*)\s+\((.*):(\d+):(\d+)\)/.exec(callerLine);
       if (match) {
@@ -238,3 +188,60 @@ function getCaller() {
   }
   return null;
 }
+
+export function NewEvent(w: ILevelWriter, level: TLevel): Event {
+  const e = eventPool.getEvent();
+  e.buf = Append.AppendBeginMarker(new Uint8Array(0));
+  e.w = w;
+  e.level = level;
+  return e;
+}
+
+class EventPool {
+  private activeEvents: Event[];
+  private reservedEvents: Event[];
+
+  constructor(reservedEvents = 50) {
+    this.activeEvents = [];
+    this.reservedEvents = [];
+
+    this.initializeReservedEvents(reservedEvents);
+  }
+
+  private initializeReservedEvents(reserve: number) {
+    for (let i = 0; i < reserve; i++) {
+      const event = new Event();
+      this.reservedEvents.push(event);
+    }
+  }
+
+  public getEvent(): Event {
+    if (this.reservedEvents.length === 0) {
+      this.reservedEvents.push(new Event());
+    }
+
+    const event = this.reservedEvents.pop()!;
+
+    this.activeEvents.push(event);
+
+    // console.log("get", this.activeEvents.length, this.reservedEvents.length);
+
+    return event;
+  }
+
+  public returnEvent(event: Event) {
+    const index = this.activeEvents.indexOf(event);
+    if (index !== -1) {
+      this.activeEvents.splice(index, 1);
+
+      this.reservedEvents.push(event);
+    }
+    // console.log(
+    //   "returned",
+    //   this.activeEvents.length,
+    //   this.reservedEvents.length,
+    // );
+  }
+}
+
+export const eventPool = new EventPool();
