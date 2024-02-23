@@ -1,9 +1,9 @@
-import * as Append from "../json/append";
-import { GetLevelNumber, Level as LevelConsts } from "./level";
-import { WriterIsLevelWriter, LevelWriterAdapter } from "./writer";
-import { Context } from "./context";
-import { NewEvent } from "./event";
-import { LevelFieldName } from "../consts/fields";
+import * as Append from "../json/append.js";
+import { GetLevelNumber, Level as LevelConsts } from "./level.js";
+import { WriterIsLevelWriter, LevelWriterAdapter } from "./writer.js";
+import { Context } from "./context.js";
+import { NewEvent } from "./event.js";
+import { LevelFieldName } from "../consts/fields.js";
 
 import type { Event } from "./event";
 import type { ILevelWriter, IWriter } from "./writer";

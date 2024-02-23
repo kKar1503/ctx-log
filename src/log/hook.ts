@@ -1,7 +1,7 @@
 import { Level } from "./level.js";
 
-import type { Event } from "./event.ts";
-import type { TLevel } from "./level.js";
+import type { Event } from "./event";
+import type { TLevel } from "./level";
 
 export interface Hook {
   Run(e: Event, level: TLevel, message: string): void;

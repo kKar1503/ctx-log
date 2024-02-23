@@ -1,6 +1,6 @@
-import * as Append from "../json/append";
-import { Level } from "./level";
-import * as Consts from "../consts/fields";
+import * as Append from "../json/append.js";
+import { Level } from "./level.js";
+import * as Consts from "../consts/fields.js";
 
 import type { TLevel } from "./level";
 import type { ILevelWriter } from "./writer";
