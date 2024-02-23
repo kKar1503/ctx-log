@@ -4,17 +4,12 @@ import { WriterIsLevelWriter, LevelWriterAdapter } from "./writer.js";
 import { Context } from "./context.js";
 import { NewEvent } from "./event.js";
 import { LevelFieldName } from "../consts/fields.js";
+import { StdoutWriter, DiscardWriter } from "../writers/writers.js";
 
 import type { Event } from "./event";
 import type { ILevelWriter, IWriter } from "./writer";
 import type { Hook } from "./hook";
 import type { TLevel } from "./level";
-
-export const StdoutWriter: IWriter = {
-  Write: (p: Uint8Array) => {
-    process.stdout.write(p);
-  },
-};
 
 export class Logger {
   private static globalLevel: TLevel = LevelConsts.TraceLevel;
@@ -172,11 +167,6 @@ export class Logger {
     return this.NewEvent(LevelConsts.NoLevel);
   }
 }
-
-export const DiscardWriter: ILevelWriter = {
-  Write: () => {},
-  WriteLevel: (_level, _p) => {},
-};
 
 export function NewLogger(w?: IWriter): Logger {
   let lw: ILevelWriter;
