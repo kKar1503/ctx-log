@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify --sourcemap",
+    "lint": "pnpm run lint:eslint && pnpm run lint:type",
+    "lint:type": "tsc",
+    "lint:eslint": "eslint src --ext .ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Yam Kar Lok",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.19",
