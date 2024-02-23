@@ -1,6 +1,6 @@
 import * as Append from "../json/append";
 import { Level } from "./level";
-import { MessageFieldName } from "../consts/fields";
+import * as Consts from "../consts/fields";
 
 import type { TLevel } from "./level";
 import type { ILevelWriter } from "./writer";
@@ -57,7 +57,7 @@ export class Event {
     }
     if (msg !== "") {
       this.buf = Append.AppendString(
-        Append.AppendKey(this.buf, MessageFieldName),
+        Append.AppendKey(this.buf, Consts.MessageFieldName),
         msg,
       );
     }
@@ -104,12 +104,12 @@ export class Event {
 
   public Error(err: Error) {
     this.buf = Append.AppendString(
-      Append.AppendKey(this.buf, "error"),
+      Append.AppendKey(this.buf, Consts.ErrorFieldName),
       `${err.name}: ${err.message}`,
     );
     if (this.stack && err.stack) {
       this.buf = Append.AppendStrings(
-        Append.AppendKey(this.buf, "stack"),
+        Append.AppendKey(this.buf, Consts.StackFieldName),
         ...err.stack.split("\n").map((s) => s.trim()),
       );
     }
@@ -128,7 +128,7 @@ export class Event {
 
   public Timestamp() {
     this.buf = Append.AppendString(
-      Append.AppendKey(this.buf, "time"),
+      Append.AppendKey(this.buf, Consts.TimestampFieldName),
       new Date().toISOString(),
     );
     return this;
@@ -166,7 +166,7 @@ export class Event {
     const caller = getCaller();
     if (caller) {
       this.buf = Append.AppendString(
-        Append.AppendKey(this.buf, "caller"),
+        Append.AppendKey(this.buf, Consts.CallerFieldName),
         `${caller.fileName}:${caller.lineNumber}`,
       );
     }
@@ -201,7 +201,7 @@ class EventPool {
   private activeEvents: Event[];
   private reservedEvents: Event[];
 
-  constructor(reservedEvents = 50) {
+  constructor(reservedEvents = 10) {
     this.activeEvents = [];
     this.reservedEvents = [];
 
@@ -224,8 +224,6 @@ class EventPool {
 
     this.activeEvents.push(event);
 
-    // console.log("get", this.activeEvents.length, this.reservedEvents.length);
-
     return event;
   }
 
@@ -236,11 +234,6 @@ class EventPool {
 
       this.reservedEvents.push(event);
     }
-    // console.log(
-    //   "returned",
-    //   this.activeEvents.length,
-    //   this.reservedEvents.length,
-    // );
   }
 }
 
