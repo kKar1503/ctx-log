@@ -1,49 +1,42 @@
 export type TDuration = "ms" | "s" | "m" | "h";
 
-function AppendBytes(buf: Uint8Array, bytes: Uint8Array): Uint8Array {
+export function AppendBytes(buf: Uint8Array, bytes: Uint8Array): Uint8Array {
   const newBuf = new Uint8Array(buf.length + bytes.length);
-
-  for (let i = 0; i < buf.length; i++) {
-    newBuf[i] = buf[i];
-  }
-
-  for (let i = 0; i < bytes.length; i++) {
-    newBuf[buf.length + i] = bytes[i];
-  }
-
+  newBuf.set(buf);
+  newBuf.set(bytes, buf.length);
   return newBuf;
 }
 
-export function AppendChar(buf: Uint8Array, ch: string): Uint8Array {
+export function AppendUTF8(buf: Uint8Array, ch: string): Uint8Array {
   return AppendBytes(buf, new TextEncoder().encode(ch));
 }
 
-export function AppendChars(buf: Uint8Array, ...chs: string[]): Uint8Array {
-  return AppendChar(buf, chs.join(""));
+export function AppendUTF8s(buf: Uint8Array, ...chs: string[]): Uint8Array {
+  return AppendUTF8(buf, chs.join(""));
 }
 
 export function AppendNull(buf: Uint8Array): Uint8Array {
-  return AppendChar(buf, "null");
+  return AppendUTF8(buf, "null");
 }
 
 export function AppendBeginMarker(buf: Uint8Array): Uint8Array {
-  return AppendChar(buf, "{");
+  return AppendUTF8(buf, "{");
 }
 
 export function AppendEndMarker(buf: Uint8Array): Uint8Array {
-  return AppendChar(buf, "}");
+  return AppendUTF8(buf, "}");
 }
 
 export function AppendLineBreak(buf: Uint8Array): Uint8Array {
-  return AppendChar(buf, "\n");
+  return AppendUTF8(buf, "\n");
 }
 
 export function AppendArrayStart(buf: Uint8Array): Uint8Array {
-  return AppendChar(buf, "[");
+  return AppendUTF8(buf, "[");
 }
 
 export function AppendArrayEnd(buf: Uint8Array): Uint8Array {
-  return AppendChar(buf, "]");
+  return AppendUTF8(buf, "]");
 }
 
 export function AppendArrayDelimiter(buf: Uint8Array): Uint8Array {
@@ -51,14 +44,14 @@ export function AppendArrayDelimiter(buf: Uint8Array): Uint8Array {
     return buf;
   }
 
-  return AppendChar(buf, ",");
+  return AppendUTF8(buf, ",");
 }
 
 export function AppendBoolean(buf: Uint8Array, val: boolean): Uint8Array {
   if (val) {
-    return AppendChar(buf, "true");
+    return AppendUTF8(buf, "true");
   }
-  return AppendChar(buf, "false");
+  return AppendUTF8(buf, "false");
 }
 
 export function AppendBooleans(
@@ -66,7 +59,7 @@ export function AppendBooleans(
   ...vals: boolean[]
 ): Uint8Array {
   if (vals.length === 0) {
-    return AppendChars(buf, "[", "]");
+    return AppendUTF8(buf, "[]");
   }
 
   buf = AppendArrayStart(buf);
@@ -82,12 +75,12 @@ export function AppendBooleans(
 }
 
 export function AppendNumber(buf: Uint8Array, val: number): Uint8Array {
-  return AppendChar(buf, val.toString());
+  return AppendUTF8(buf, val.toString());
 }
 
 export function AppendNumbers(buf: Uint8Array, ...vals: number[]): Uint8Array {
   if (vals.length === 0) {
-    return AppendChars(buf, "[", "]");
+    return AppendUTF8s(buf, "[", "]");
   }
 
   buf = AppendArrayStart(buf);
@@ -103,12 +96,12 @@ export function AppendNumbers(buf: Uint8Array, ...vals: number[]): Uint8Array {
 }
 
 export function AppendString(buf: Uint8Array, val: string): Uint8Array {
-  return AppendChars(buf, '"', val, '"');
+  return AppendUTF8s(buf, '"', val, '"');
 }
 
 export function AppendStrings(buf: Uint8Array, ...vals: string[]): Uint8Array {
   if (vals.length === 0) {
-    return AppendChars(buf, "[", "]");
+    return AppendUTF8s(buf, "[", "]");
   }
 
   buf = AppendArrayStart(buf);
@@ -129,7 +122,7 @@ export function AppendTime(buf: Uint8Array, val: Date): Uint8Array {
 
 export function AppendTimes(buf: Uint8Array, ...vals: Date[]): Uint8Array {
   if (vals.length === 0) {
-    return AppendChars(buf, "[", "]");
+    return AppendUTF8s(buf, "[", "]");
   }
 
   buf = AppendArrayStart(buf);
@@ -197,7 +190,7 @@ export function AppendDurations(
   ...vals: number[]
 ): Uint8Array {
   if (vals.length === 0) {
-    return AppendChars(buf, "[", "]");
+    return AppendUTF8s(buf, "[", "]");
   }
 
   buf = AppendArrayStart(buf);
@@ -215,17 +208,17 @@ export function AppendDurations(
 export function AppendAny(buf: Uint8Array, val: any): Uint8Array {
   try {
     const objString = JSON.stringify(val);
-    return AppendChar(buf, objString);
+    return AppendUTF8(buf, objString);
   } catch (e) {
-    return AppendChar(buf, `JSON.stringify error: ${e}`);
+    return AppendUTF8(buf, `JSON.stringify error: ${e}`);
   }
 }
 
 export function AppendKey(buf: Uint8Array, key: string): Uint8Array {
-  if (buf[buf.length - 1] !== "{".charCodeAt(0)) {
-    buf = AppendChar(buf, ",");
+  if (buf.length > 0 && buf[buf.length - 1] !== "{".charCodeAt(0)) {
+    buf = AppendUTF8(buf, ",");
   }
-  return AppendChar(AppendString(buf, key), ":");
+  return AppendUTF8(AppendString(buf, key), ":");
 }
 
 export function AppendObjectData(dst: Uint8Array, o: Uint8Array): Uint8Array {
@@ -236,11 +229,11 @@ export function AppendObjectData(dst: Uint8Array, o: Uint8Array): Uint8Array {
   // 3. existing content has already other fields
   if (o[0] === "{".charCodeAt(0)) {
     if (dst.length > 1) {
-      dst = AppendChar(dst, ",");
+      dst = AppendUTF8(dst, ",");
     }
     o = o.subarray(1);
   } else if (dst.length > 1) {
-    dst = AppendChar(dst, ",");
+    dst = AppendUTF8(dst, ",");
   }
   return AppendBytes(dst, o);
 }
