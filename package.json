@@ -10,12 +10,14 @@
     "lint": "pnpm run lint:eslint && pnpm run lint:type",
     "lint:type": "tsc",
     "lint:eslint": "eslint src --ext .ts",
-    "ci": "pnpm run lint && pnpm run test && pnpm run build"
+    "ci": "pnpm run lint && pnpm run test && pnpm run build",
+    "release": "pnpm run ci && changesets publish"
   },
   "keywords": [],
   "author": "Yam Kar Lok",
   "license": "ISC",
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
