@@ -114,7 +114,7 @@ export class Context {
 
   public Timestamp(): Context {
     const c = this.CloneWithProperties({});
-    c.logger.Hook({
+    c.logger.Hooks({
       Run(e, _level, _message) {
         e.Timestamp();
       },
@@ -162,7 +162,7 @@ export class Context {
 
   public Caller(): Context {
     const c = this.CloneWithProperties({});
-    c.logger.Hook({
+    c.logger.Hooks({
       Run(e, _level, _message) {
         e.Caller();
       },

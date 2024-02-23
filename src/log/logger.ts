@@ -128,7 +128,7 @@ export class Logger {
     return this.level;
   }
 
-  public Hook(...hooks: Hook[]): Logger {
+  public Hooks(...hooks: Hook[]): Logger {
     if (this.hooks.length === 0) {
       this.hooks = hooks;
       return this;
@@ -173,7 +173,7 @@ export class Logger {
   }
 }
 
-const DiscardWriter: ILevelWriter = {
+export const DiscardWriter: ILevelWriter = {
   Write: () => {},
   WriteLevel: (_level, _p) => {},
 };
@@ -191,54 +191,6 @@ export function NewLogger(w?: IWriter): Logger {
   }
 
   return new Logger(lw, LevelConsts.TraceLevel);
-}
-
-export function NopLogger(): Logger {
-  return new Logger(DiscardWriter, LevelConsts.Disabled);
-}
-
-export function OutputLogger(w: IWriter): Logger {
-  return Logger.GlobalLogger.Output(w);
-}
-
-export function With(): Context {
-  return Logger.GlobalLogger.With();
-}
-
-export function Level(level: TLevel): Logger {
-  return Logger.GlobalLogger.Level(level);
-}
-
-export function Hook(...hooks: Hook[]): Logger {
-  return Logger.GlobalLogger.Hook(...hooks);
-}
-
-export function Trace(): Event {
-  return Logger.GlobalLogger.Trace();
-}
-
-export function Debug(): Event {
-  return Logger.GlobalLogger.Debug();
-}
-
-export function Info(): Event {
-  return Logger.GlobalLogger.Info();
-}
-
-export function Warn(): Event {
-  return Logger.GlobalLogger.Warn();
-}
-
-export function Error(error?: Error): Event {
-  return Logger.GlobalLogger.Error(error);
-}
-
-export function Fatal(): Event {
-  return Logger.GlobalLogger.Fatal();
-}
-
-export function Log(): Event {
-  return Logger.GlobalLogger.Log();
 }
 
 Logger.Init();
