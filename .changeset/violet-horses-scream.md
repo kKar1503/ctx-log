@@ -1,5 +1,5 @@
 ---
-"context-log": patch
+"ctx-log": patch
 ---
 
 Fix publish workflow

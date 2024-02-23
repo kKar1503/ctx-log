@@ -1,4 +1,4 @@
-# context-log
+# ctx-log
 
 ## 0.0.1
 
