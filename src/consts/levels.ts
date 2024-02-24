@@ -23,3 +23,12 @@ export const Level = {
   // Disabled disables the logger.
   Disabled: "disabled",
 } as const;
+
+export const formattedLevels = {
+  [LevelTraceValue]: "TRC",
+  [LevelDebugValue]: "DBG",
+  [LevelInfoValue]: "INF",
+  [LevelWarnValue]: "WRN",
+  [LevelErrorValue]: "ERR",
+  [LevelFatalValue]: "FTL",
+} as const;
