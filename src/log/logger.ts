@@ -1,5 +1,6 @@
 import * as Append from "../json/append.js";
-import { GetLevelNumber, Level as LevelConsts } from "./level.js";
+import { GetLevelNumber } from "./level.js";
+import { Level as LevelConsts } from "../consts/levels.js";
 import { WriterIsLevelWriter, LevelWriterAdapter } from "./writer.js";
 import { Context } from "./context.js";
 import { NewEvent } from "./event.js";

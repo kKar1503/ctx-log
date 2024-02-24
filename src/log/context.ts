@@ -1,4 +1,4 @@
-import * as Append from "../json/append";
+import * as Append from "../json/append.js";
 
 import type { Logger } from "./logger";
 import type { TDuration } from "../json/append";

@@ -1,4 +1,4 @@
-import { Level } from "./level.js";
+import { Level } from "../consts/levels.js";
 
 import type { Event } from "./event";
 import type { TLevel } from "./level";

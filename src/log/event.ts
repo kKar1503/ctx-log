@@ -1,5 +1,5 @@
 import * as Append from "../json/append.js";
-import { Level } from "./level.js";
+import { Level } from "../consts/levels.js";
 import * as Consts from "../consts/fields.js";
 
 import type { TLevel } from "./level";

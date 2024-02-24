@@ -4,7 +4,7 @@ import {
   DiscardWriter,
   NewLogger,
 } from "./log/logger.js";
-import { Level as LevelConsts } from "./log/level.js";
+import { Level as LevelConsts } from "./consts/levels.js";
 import {
   LevelWriterAdapter,
   MultiLevelWriter,
