@@ -1,5 +1,11 @@
 # ctx-log
 
+## 0.0.3
+
+### Patch Changes
+
+- c9a965a: Finalized logger with a console writer
+
 ## 0.0.2
 
 ### Patch Changes
