@@ -33,6 +33,7 @@ export {
   FilteredLevelWriter,
   LevelHook,
   NewLevelHook,
+  Logger,
 };
 
 export type {
