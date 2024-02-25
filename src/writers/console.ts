@@ -80,6 +80,10 @@ export class ConsoleWriter implements IWriter {
         output = Append.AppendSpace(output);
       }
     }
+
+    output = Append.AppendLineBreak(output);
+
+    process.stdout.write(output);
   }
 
   private WriteParts(buf: Uint8Array, value: any, field: string) {
