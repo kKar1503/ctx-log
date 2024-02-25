@@ -1,5 +1,11 @@
 # ctx-log
 
+## 0.0.7
+
+### Patch Changes
+
+- 5d7e1a0: Added wip README.md
+
 ## 0.0.6
 
 ### Patch Changes
