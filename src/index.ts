@@ -1,5 +1,6 @@
 import { Logger, NewLogger } from "./log/logger.js";
 import { DiscardWriter, StdoutWriter } from "./writers/writers.js";
+import { ConsoleWriter } from "./writers/console.js";
 import { Level as LevelConsts } from "./consts/levels.js";
 import {
   LevelWriterAdapter,
@@ -22,6 +23,7 @@ export default Logger.GlobalLogger;
 export {
   DiscardWriter,
   StdoutWriter,
+  ConsoleWriter,
   LevelConsts as Level,
   NewLogger,
   LevelWriterAdapter,
