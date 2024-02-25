@@ -61,10 +61,10 @@ export class Event {
         msg,
       );
     }
+    this.Write();
     if (this.done) {
       this.done(msg);
     }
-    this.Write();
   }
 
   public String(key: string, value: string) {
