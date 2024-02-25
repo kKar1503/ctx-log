@@ -153,13 +153,18 @@ function formatDate(noColor: boolean): (d: Date) => Uint8Array {
   return (d: Date) => {
     const h = d.getHours();
     const m = d.getMinutes();
-    const s = d.getSeconds();
-    const ms = d.getMilliseconds();
-    let str = h.toString().padStart(2, "0") + ":";
-    str += m.toString().padStart(2, "0") + ":";
-    str += s.toString().padStart(2, "0") + ".";
-    str += ms.toString().padStart(3, "0");
-    return colorize(new TextEncoder().encode(str), colorDarkGrey, noColor);
+    const ampm = h >= 12 ? "PM" : "AM";
+    const h12 = h > 12 ? h - 12 : h;
+    return colorize(
+      new TextEncoder().encode(
+        h12.toString().padStart(2, "0") +
+          ":" +
+          m.toString().padStart(2, "0") +
+          ampm,
+      ),
+      colorDarkGrey,
+      noColor,
+    );
   };
 }
 
