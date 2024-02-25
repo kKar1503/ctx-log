@@ -18,7 +18,11 @@ import type { TLevel } from "./log/level";
 import type { Hook, HookFunc } from "./log/hook";
 import type { TDuration } from "./json/append";
 
-export default Logger.GlobalLogger;
+export function GetGlobalLogger() {
+  return Logger.GlobalLogger;
+}
+
+export default GetGlobalLogger;
 
 export {
   DiscardWriter,
