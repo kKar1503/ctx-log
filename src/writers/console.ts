@@ -92,7 +92,14 @@ export class ConsoleWriter implements IWriter {
   private WriteParts(buf: Uint8Array, value: any, field: string) {
     switch (field) {
       case TimestampFieldName:
-        return Append.AppendBytes(buf, this.TimestampFormatter(value));
+        if (value instanceof Date) {
+          return Append.AppendBytes(buf, this.TimestampFormatter(value));
+        } else {
+          return Append.AppendBytes(
+            buf,
+            this.TimestampFormatter(new Date(value)),
+          );
+        }
       case LevelFieldName:
         return Append.AppendBytes(buf, this.LevelFormatter(value));
       case CallerFieldName:
