@@ -1,5 +1,11 @@
 # ctx-log
 
+## 0.0.5
+
+### Patch Changes
+
+- d99d36f: Fix missing export for Logger class
+
 ## 0.0.4
 
 ### Patch Changes
