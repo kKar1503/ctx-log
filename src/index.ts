@@ -86,7 +86,7 @@ export function Warn(): Event {
   return Logger.GlobalLogger.Warn();
 }
 
-export function Error(error?: Error): Event {
+export function Err(error?: Error): Event {
   return Logger.GlobalLogger.Error(error);
 }
 
