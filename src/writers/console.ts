@@ -96,8 +96,13 @@ export class ConsoleWriter implements IWriter {
         return Append.AppendBytes(buf, this.CallerFormatter(value));
       case MessageFieldName:
         return Append.AppendBytes(buf, this.MessageFormatter(value));
-      case ErrorFieldName:
-        return Append.AppendBytes(buf, this.ErrorFormatter(value));
+      case ErrorFieldName: {
+        const errName = (value as string).split(": ", 1)[0];
+        const errMessage = (value as string).substr(errName.length + 2);
+        const err = new Error(errMessage);
+        err.name = errName;
+        return Append.AppendBytes(buf, this.ErrorFormatter(err));
+      }
       default:
         return Append.AppendBytes(
           buf,
