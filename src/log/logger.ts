@@ -6,6 +6,7 @@ import { Context } from "./context.js";
 import { NewEvent } from "./event.js";
 import { LevelFieldName } from "../consts/fields.js";
 import { StdoutWriter, DiscardWriter } from "../writers/writers.js";
+import { ConsoleWriter } from "../writers/console.js";
 
 import type { Event } from "./event";
 import type { ILevelWriter, IWriter } from "./writer";
@@ -27,11 +28,20 @@ export class Logger {
   ) {}
 
   public static Init(): void {
-    Logger.GlobalLogger = NewLogger(StdoutWriter)
-      .With()
-      .Timestamp()
-      .Caller()
-      .Logger();
+    const nodeEnv = process.env["NODE_ENV"];
+    if (nodeEnv && nodeEnv === "development") {
+      Logger.GlobalLogger = NewLogger(new ConsoleWriter())
+        .With()
+        .Timestamp()
+        .Caller()
+        .Logger();
+    } else {
+      Logger.GlobalLogger = NewLogger(StdoutWriter)
+        .With()
+        .Timestamp()
+        .Caller()
+        .Logger();
+    }
   }
 
   public static SetGlobalLevel(level: TLevel) {
