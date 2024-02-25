@@ -182,9 +182,11 @@ function formatCaller(noColor: boolean): (caller: string) => Uint8Array {
       colorBold,
       noColor,
     );
-    const arrowBuf = new Uint8Array([27, 91, 51, 54, 109, 62, 27, 91, 48, 109]);
+    const arrowBuf = new Uint8Array([
+      32, 27, 91, 51, 54, 109, 62, 27, 91, 48, 109,
+    ]);
 
-    return Append.AppendBytes(arrowBuf, callerBuf);
+    return Append.AppendBytes(callerBuf, arrowBuf);
   };
 }
 
