@@ -61,7 +61,7 @@ export class ConsoleWriter implements IWriter {
     const otherFieldsName = Object.keys(json).filter(
       (k) => !this.PartsOrdering.includes(k),
     );
-    let output: Uint8Array = Append.AppendBeginMarker(new Uint8Array(0));
+    let output: Uint8Array = new Uint8Array(0);
 
     for (let i = 0; i < existingOrderedFields.length; i++) {
       const field = existingOrderedFields[i];
