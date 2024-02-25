@@ -1,6 +1,6 @@
 {
   "name": "ctx-log",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Context logger for Node.js, written in TypeScript.",
   "private": false,
   "repository": {

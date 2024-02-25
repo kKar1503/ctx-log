@@ -1,5 +1,11 @@
 # ctx-log
 
+## 0.0.6
+
+### Patch Changes
+
+- 3ff3b15: Fixed global logger not being updated with default export
+
 ## 0.0.5
 
 ### Patch Changes
