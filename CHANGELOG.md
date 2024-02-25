@@ -1,5 +1,11 @@
 # ctx-log
 
+## 0.0.4
+
+### Patch Changes
+
+- 2069b65: Updated the package.json with properties
+
 ## 0.0.3
 
 ### Patch Changes
