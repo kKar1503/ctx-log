@@ -158,8 +158,7 @@ function formatLevel(noColor: boolean): (level: string) => Uint8Array {
       formatted = level.substr(0, 3).toUpperCase();
       color = colorReset;
     }
-    const levelBuf = Append.AppendString(new Uint8Array(0), formatted);
-    return colorize(levelBuf, color, noColor);
+    return colorize(new TextEncoder().encode(formatted), color, noColor);
   };
 }
 
