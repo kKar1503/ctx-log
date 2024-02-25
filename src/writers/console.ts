@@ -67,7 +67,10 @@ export class ConsoleWriter implements IWriter {
       const field = existingOrderedFields[i];
       const value = json[field];
       output = this.WriteParts(output, value, field);
-      if (i !== existingOrderedFields.length - 1) {
+      if (
+        i !== existingOrderedFields.length - 1 ||
+        otherFieldsName.length > 0
+      ) {
         output = Append.AppendSpace(output);
       }
     }
