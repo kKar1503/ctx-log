@@ -16,7 +16,24 @@
     "ci": "pnpm run lint && pnpm run test && pnpm run build",
     "release": "pnpm run ci && changeset publish"
   },
-  "keywords": [],
+  "keywords": [
+    "context",
+    "logger",
+    "ctx-log",
+    "log",
+    "context-log",
+    "logging",
+    "logs",
+    "sysadmin",
+    "bunyan",
+    "winston",
+    "pino",
+    "loglevel",
+    "tools",
+    "json",
+    "stream",
+    "zerolog"
+  ],
   "author": "Yam Kar Lok",
   "license": "MIT",
   "devDependencies": {
