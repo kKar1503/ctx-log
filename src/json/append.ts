@@ -39,6 +39,10 @@ export function AppendArrayEnd(buf: Uint8Array): Uint8Array {
   return AppendUTF8(buf, "]");
 }
 
+export function AppendSpace(buf: Uint8Array): Uint8Array {
+  return AppendUTF8(buf, " ");
+}
+
 export function AppendArrayDelimiter(buf: Uint8Array): Uint8Array {
   if (buf.length === 0) {
     return buf;

@@ -786,4 +786,26 @@ describe("append logic", () => {
       ).toStrictEqual(stringResult);
     }
   });
+
+  it("should append space correctly", () => {
+    const testCases: [
+      a: Uint8Array,
+      result: Uint8Array,
+      stringResult: string,
+    ][] = [
+      [
+        new Uint8Array([1, 2, 3]),
+        new Uint8Array([1, 2, 3, 32]),
+        "\x01\x02\x03 ",
+      ],
+      [new Uint8Array(0), new Uint8Array([32]), " "],
+    ];
+
+    for (const [a, result, stringResult] of testCases) {
+      expect(Append.AppendSpace(a)).toStrictEqual(result);
+      expect(new TextDecoder().decode(Append.AppendSpace(a))).toStrictEqual(
+        stringResult,
+      );
+    }
+  });
 });
