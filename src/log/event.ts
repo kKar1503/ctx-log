@@ -162,6 +162,46 @@ export class Event {
     return this;
   }
 
+  public Properties(record: Record<string, any>) {
+    Object.entries(record).forEach(([k, v]) => {
+      switch (typeof v) {
+        case "string":
+          this.buf = Append.AppendString(Append.AppendKey(this.buf, k), v);
+          break;
+        case "number":
+          this.buf = Append.AppendNumber(Append.AppendKey(this.buf, k), v);
+          break;
+        case "boolean":
+          this.buf = Append.AppendBoolean(Append.AppendKey(this.buf, k), v);
+          break;
+        case "object":
+          if (v instanceof Date) {
+            this.buf = Append.AppendTime(Append.AppendKey(this.buf, k), v);
+          } else if (v instanceof Error) {
+            this.buf = Append.AppendString(
+              Append.AppendKey(this.buf, k),
+              `${v.name}: ${v.message}`,
+            );
+            if (this.stack && v.stack) {
+              this.buf = Append.AppendString(
+                Append.AppendKey(this.buf, "stack"),
+                v.stack,
+              );
+            }
+          } else if (v instanceof Uint8Array) {
+            this.buf = Append.AppendBytes(Append.AppendKey(this.buf, k), v);
+          } else {
+            this.buf = Append.AppendAny(Append.AppendKey(this.buf, k), v);
+          }
+          break;
+        default:
+          this.buf = Append.AppendAny(Append.AppendKey(this.buf, k), v);
+          break;
+      }
+    });
+    return this;
+  }
+
   public Caller() {
     const caller = getCaller();
     if (caller) {

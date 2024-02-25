@@ -160,6 +160,68 @@ export class Context {
     return c;
   }
 
+  public Properties(record: Record<string, any>): Context {
+    const c = this.CloneWithProperties({});
+    Object.entries(record).forEach(([k, v]) => {
+      switch (typeof v) {
+        case "string":
+          c.logger.context = Append.AppendString(
+            Append.AppendKey(c.logger.context, k),
+            v,
+          );
+          break;
+        case "number":
+          c.logger.context = Append.AppendNumber(
+            Append.AppendKey(c.logger.context, k),
+            v,
+          );
+          break;
+        case "boolean":
+          c.logger.context = Append.AppendBoolean(
+            Append.AppendKey(c.logger.context, k),
+            v,
+          );
+          break;
+        case "object":
+          if (v instanceof Date) {
+            c.logger.context = Append.AppendTime(
+              Append.AppendKey(c.logger.context, k),
+              v,
+            );
+          } else if (v instanceof Error) {
+            c.logger.context = Append.AppendString(
+              Append.AppendKey(c.logger.context, k),
+              `${v.name}: ${v.message}`,
+            );
+            if (c.logger.stack && v.stack) {
+              c.logger.context = Append.AppendString(
+                Append.AppendKey(c.logger.context, "stack"),
+                v.stack,
+              );
+            }
+          } else if (v instanceof Uint8Array) {
+            c.logger.context = Append.AppendBytes(
+              Append.AppendKey(c.logger.context, k),
+              v,
+            );
+          } else {
+            c.logger.context = Append.AppendAny(
+              Append.AppendKey(c.logger.context, k),
+              v,
+            );
+          }
+          break;
+        default:
+          c.logger.context = Append.AppendAny(
+            Append.AppendKey(c.logger.context, k),
+            v,
+          );
+          break;
+      }
+    });
+    return c;
+  }
+
   public Caller(): Context {
     const c = this.CloneWithProperties({});
     c.logger.Hooks({
