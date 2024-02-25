@@ -37,7 +37,7 @@ export const formattedLevels = {
 
 export const levelColors = {
   [LevelTraceValue]: colors.colorBlue,
-  [LevelDebugValue]: colors.colorReset,
+  [LevelDebugValue]: colors.colorWhite,
   [LevelInfoValue]: colors.colorGreen,
   [LevelWarnValue]: colors.colorYellow,
   [LevelErrorValue]: colors.colorRed,
