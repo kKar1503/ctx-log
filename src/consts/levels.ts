@@ -1,3 +1,5 @@
+import * as colors from "./colors.js";
+
 const LevelTraceValue = "trace";
 const LevelDebugValue = "debug";
 const LevelInfoValue = "info";
@@ -31,4 +33,13 @@ export const formattedLevels = {
   [LevelWarnValue]: "WRN",
   [LevelErrorValue]: "ERR",
   [LevelFatalValue]: "FTL",
+} as const;
+
+export const levelColors = {
+  [LevelTraceValue]: colors.colorBlue,
+  [LevelDebugValue]: colors.colorReset,
+  [LevelInfoValue]: colors.colorGreen,
+  [LevelWarnValue]: colors.colorYellow,
+  [LevelErrorValue]: colors.colorRed,
+  [LevelFatalValue]: colors.colorMagenta,
 } as const;
