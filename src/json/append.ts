@@ -96,7 +96,7 @@ export function AppendNumbers(buf: Uint8Array, ...vals: number[]): Uint8Array {
 }
 
 export function AppendString(buf: Uint8Array, val: string): Uint8Array {
-  return AppendUTF8s(buf, '"', val, '"');
+  return AppendUTF8(buf, '"' + val + '"');
 }
 
 export function AppendStrings(buf: Uint8Array, ...vals: string[]): Uint8Array {
