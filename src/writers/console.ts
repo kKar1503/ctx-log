@@ -116,7 +116,8 @@ function colorize(
   noColor: boolean,
 ): Uint8Array {
   const noColorEnv = process.env["NO_COLOR"];
-  if (noColor || noColorEnv === undefined || color === "0") {
+
+  if (noColor || noColorEnv === "true" || color === "0") {
     return data;
   }
 
